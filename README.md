@@ -1,14 +1,25 @@
 # Porto (Software Architectural Pattern)
 
+![](https://s31.postimg.org/v0tfzzevf/Porto_Logo.png)
+
+<br>
 
 - [Introduction](#Introduction)
 - [Quality Attributes](#Quality-Attributes)
-- [Request Life Cycle](#Request-Life-Cycle)
-- [Diagrams](#Diagrams)
 - [Layers](#layers)
+	- [Layers Diagram](#Layer-Diagram)
 	- [Port Layer](#Port-Layer)
 	- [Containers Layer](#Containers-Layer)
-- [Components](#Container-Components)
+		- [Structure](#Containers-Structure)
+		- [Interactions](#Containers-Interactions)
+		- [Example](#Containers-Example)
+- [Components Categories](#Components-Categories)
+	- [Class A](#Class-A-Components)
+		- [Components Interaction Diagram](#Components-Interaction-Diagram)
+		- [Request Life Cycle](#Request-Life-Cycle)
+	- [Class B](#Class-B-Components)
+	- [Class C](#Class-C-Components)
+- [Components](#Components-Details)
 	- [Routes](#Routes)
 	- [Controllers](#Controllers)
 	- [Requests](#Requests)
@@ -31,7 +42,7 @@
 - [Projects](#Projects)
 - [Credits](#Credits)
 
-![](https://s31.postimg.org/v0tfzzevf/Porto_Logo.png)
+
 
 <a id="Introduction"></a>
 # Introduction
@@ -45,13 +56,7 @@ It adapts techniques from multiple architectures (Layered, Clean, Service Orient
 And it adheres to the most convenient design principles (SOLID, LIFT, Generalization, GRASP and more).
 
 
-
-In Porto, the Interfaces (WEB, API, CLI) are appendices to the Application. Whereas the central organizing principle of the Application is the Actions (Use Cases) that your Application provides.
-
-
-**Porto is Laravel 5 friendly :)**
-
-
+In Porto, the Interfaces (WEB, API, CLI) are appendices to the Application Logic. And the Actions (Features) are the central organizing principle.
 
 
 
@@ -77,32 +82,6 @@ In Porto, the Interfaces (WEB, API, CLI) are appendices to the Application. Wher
 
 
 
-<a id="Request-Life-Cycle"></a>
-# Request Life Cycle
-
-*In a typical scenario:*
-
-1. `User` calls an Endpoint *(defined in a `Route` file)*.
-2. `Endpoint` calls a `Controller`.
-3. (`Request` injected in the `Controller` automatically applies the request validation rules).
-4. `Controller` run an `Action` and pass the `Request` data to it.
-5. `Action` run multiple `Services` (passing data from one to another).
-6. `Services` performs the business logic (can also call `Services`).
-7. `Services` returns the data result to the `Action`.
-8. `Action` returns the collected results data to the `Controller`.
-9. `Controller` builds the response and send it back to the `User`.
-
-
-
-
-<a id="Diagrams"></a>
-# Diagrams
-
-
-Diagrams coming soon..
-
-
-
 
 <a id="layers"></a>
 # Layers
@@ -110,6 +89,10 @@ Diagrams coming soon..
 Porto consists of two layers the `Containers` and `Port`. 
 And a set of `Components` with predefined responsibilities.
 
+<a id="Layers-Diagram"></a>
+## Layers Diagram
+
+![](https://s9.postimg.org/tl2oum7r3/porto_layers.png)
 
 
 <br>
@@ -139,8 +122,8 @@ The Container wraps the related Components in one place.
 *"Example in a TODO App the Task would be a Container and the User would be another Container, each has it's own Routes, Controllers, Models, and so on.."*
 
 
-
-#### Container Structure:
+<a id="Containers-Structure"></a>
+### Containers Structure:
 
 ```
 Container 1
@@ -178,7 +161,16 @@ Container 2
 	        └── Controllers
 ```
 
-#### Typical Container Example:
+
+<a id="Containers-Interactions"></a>
+### Interactions between Containers
+- A Container MAY depends on one or many other Containers.
+- A Controller MAY run Services And Actions from another Container.
+- A Model MAY have a relationship with a Model from other Containers.
+
+
+<a id="Containers-Example"></a>
+### Typical Full Container Example:
 
 ```
 Container
@@ -220,18 +212,11 @@ Container
 	            └── Acceptance
 ```
 
-### Interactions between Containers
-- A Container MAY depends on one or many other Containers.
-- A Controller MAY run Services And Actions from another Container.
-- A Model MAY have a relationship with a Model from other Containers.
-
-
-
 
 
 <br>
-<a id="Container-Components"></a>
-# Components
+<a id="Components-Categories"></a>
+# Components Categories
 
 
 Every Container consist of a number of Components, in **Porto** the Components are splitted into three categories based on their importance:
@@ -239,37 +224,70 @@ Every Container consist of a number of Components, in **Porto** the Components a
 `Class B Components` and
 `Class C Components`.
 
+<a id="Class-A-Components"></a>
+## Class A Components:
 
-### Class A Components:
-
-They are the main Components. (You must use them as they are essential for almost all types of Apps).
+They are the main Components. (You must use them for almost all types of Apps):
 
 Routes - Controllers - Requests - Actions - Services - Models - Views - Transformers.
 
-> Views should be used in case the App serves HTML pages.
+> **Views:** should be used in case the App serves HTML pages.
 > <br>
-> Transformers should be used in case the App serves JSON data.
+> **Transformers:** should be used in case the App serves JSON data.
 
-### Class B Components:
 
-They are optional but highly recommended Components. (You should use them as they give a lot of goodies).
+
+
+<a id="Components-Interaction-Diagram"></a>
+### Class A Components Interaction Diagram
+
+![](https://s9.postimg.org/y03cz5rhr/porto_container.png)
+
+
+
+
+<a id="Request-Life-Cycle"></a>
+### Request Life Cycle
+
+*In a typical scenario:*
+
+1. `User` calls an Endpoint in the `Route` file.
+2. `Endpoint` calls its `Controller` function.
+3. `Request` injected in the `Controller` automatically applies the request validation/authrization rules.
+4. `Controller` calls an `Action` and pass the `Request` data to it.
+5. `Action` performs the business logic or calls `Services`.
+6. `Services` performs the shared business logic between multiple `Actions`.
+7. `Action` returns data to the `Controller`.
+8. `Controller` builds the response (using `View` or `Transformer`) and send it back to the `User`.
+
+
+
+
+<a id="Class-B-Components"></a>
+## Class B Components:
+
+They are optional but highly recommended Components. (You should use them as they give a lot of goodies):
 
 Repositories - Exceptions - Criterias - Policies - Tests.
 
-### Class C Components:
+<a id="Class-C-Components"></a>
+## Class C Components:
 
-They are completely optional Components. (You can use them only when you need them, based on your App needs).
+They are completely optional Components. (You can use them only when you need them, based on your App needs):
 
 Middlewares - Service Providers - Events - Commands - DB Migrations - DB Seeders - Data Factories - Contracts...
 
 
 
-
 <br>
+
+
+<a id="Components-Details"></a>
+# Components
 
 Below is the explanation of the roles, usage and principles of each Component.
 
-<br>
+
 
 
 <a id="Routes"></a>
@@ -287,8 +305,8 @@ When an HTTP request hits your Application, the Endpoints match with the URL pat
 - There are two types of Routes, API Routes and Web Routes.
 - The API Routes files SHOULD be separated from the Web Routes files, each in its own folder.
 - The Web Routes folder will contain only the Web Endpoints, (accessible by Web browsers); And the API Routes folder will contain only the API Endpoints, (accessible by any consumer App).
-- Every Container will have his own Routes.
-- A single Route file CAN contain multiple Endpoints.
+- Every Container SHOULD have its own Routes.
+- A single Route file MAY contain multiple Endpoints.
 - The Endpoint job is to call a function on the corresponding Controller once an HTTP request is made. (It SHOULD NOT do anything else).
 
 
