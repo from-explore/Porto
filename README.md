@@ -40,6 +40,7 @@
 	- [Factories](#Factories)
 	- [Middlewares](#Middlewares)
 - [Projects](#Projects)
+- [Feedback & Questions](#Feedback)
 - [Credits](#Credits)
 
 
@@ -57,8 +58,6 @@ And it adheres to the most convenient design principles (SOLID, LIFT, Generaliza
 
 
 In Porto, the Interfaces (WEB, API, CLI) are appendices to the Application Logic. And the Actions (Features) are the central organizing principle.
-
-
 
 
 
@@ -458,8 +457,9 @@ Transformers takes a Model or a group of Models "Collection" and converts it to 
 <a id="Repositories"></a>
 ## B : Repositories
 
+The Repository classes are an implementation of the Repository Design Pattern.
 
-Repositories are the implementation of the Repository Design Pattern.
+Their major roles are separating the business logic from the data (or the data access service).
 
 Repositories saves and retrieves Models to/from the underlying storage mechanism.
 
@@ -467,8 +467,8 @@ The Repository is used to separate the logic that retrieves the data and maps it
 
 
 #### Principles:
-- Every Model SHOULD have a Repository. 
-- A Model SHOULD always get accessed through a its Repository. (Never direct access to Model).
+- Every Model SHOULD have a Repository.
+- A Model SHOULD always get accessed through its Repository. (Never direct access to Model).
 
 
 
@@ -476,12 +476,11 @@ The Repository is used to separate the logic that retrieves the data and maps it
 <a id="Exceptions"></a>
 ## B : Exceptions
 
-
 `Exceptions` are classes the handles errors, and helps developers debug their code in a more efficient way.
 
 #### Principles:
 - Exceptions can be thrown from anywhere in the application.
-- Exceptions SHOULD be created inside the Containers, however general Exceptions SHOULD be created inside an Exception folder on the Port layer. 
+- Exceptions SHOULD be created inside the Containers. However, general Exceptions SHOULD be created the Port layer.
 
 
 
@@ -490,7 +489,6 @@ The Repository is used to separate the logic that retrieves the data and maps it
 <a id="Criterias"></a>
 ## B : Criterias
 
-
 Criterias are classes used to hold and apply query condition when retrieving data from the database through a Repository.
 
 Without using a Criteria class, you can add your query conditions to a Repository or to a Model as scope. But with Criterias, your query conditions can be shared across multiple Models and Repositories. It allows you to define the query condition once and use it anywhere in the App.
@@ -498,7 +496,7 @@ Without using a Criteria class, you can add your query conditions to a Repositor
 
 #### Principles:
 
-- Every Container MAY have it's own Criterias. However, shared Criterias SHOULD be created in a Criterias folder on the Port layer.
+- Every Container MAY have its own Criterias. However, shared Criterias SHOULD be created in the Port layer.
 - A Criteria MUST not contain any extra code, if it needs data, the data SHOULD be passed to it from the Actions or the Service. It SHOULD not run (call) any Service for data.
 
 
@@ -506,35 +504,31 @@ Without using a Criteria class, you can add your query conditions to a Repositor
 <a id="Policies"></a>
 ## B : Policies
 
-
 Policies are used to group authorization logic based on the resource they authorize.
-
-Policies are mainly used in the Requests authorize() function.
 
 Without using a Policy class, you will have to write your authorization code in the Request class. But this will make the Request looks ugly, and won't allow you to reuse the authorization code. 
 
-When using a Policy you can simply and easily apply authorization code in any request, with a simple good looking syntax code. Since every Policies will be linked to their Model using Service Providers.
+When using a Policy you can simply and easily apply authorization code in any request, with a simple good looking syntax code. Since every Policy will be linked to their Model using Service Providers.
 
-Policy authorization example: check if this user own that product before deleting it, or check if this user is admin to do manage products.
+Policy authorization example: check if this user owns that product before deleting it, or check if this user is an admin to do manage products.
 
 #### Principles:
 - A Container MAY have more than one Policy.
-
+- Policies SHOULD mainly be used in the Requests because one of the Request jobs is to check the Authorization.
 
 
 
 <a id="Tests"></a>
 ## B : Tests
 
-The two most essential Tests types for this architecture are the Unit Tests and the Functional Tests.
+Tests classes are created to test the Application classes are working as expected.
 
-However you can also add Integration and Acceptance Tests.
+The two most essential Tests types for this architecture are the Unit Tests and the Functional Tests. However, Integration and Acceptance Tests can be used as well.
 
 #### Principles:
 - Containers MAY be covered by all types of Tests.
-- *Example Use Functional Tests to test Container Routes are doing what's expected from them.*
-- *Example Use Unit Tests to test Container Actions and Services are doing what's expected from them.*
-
+- Use Functional Tests to test Container Routes are doing what's expected from them.
+- Use Unit Tests to test Container Actions and Services are doing what's expected from them.
 
 
 
@@ -557,7 +551,6 @@ However you can also add Integration and Acceptance Tests.
 <a id="Providers"></a>
 ## C : Providers
 
-
 Providers (are short names for Service Providers).
 
 Service providers are the central place of configuring and bootstrapping a Container.
@@ -566,22 +559,21 @@ They are the place where you register things such as container bindings, event l
 
 #### Principles:
 - A Container MAY have one or many Providers and MAY have no Provider at all.
-- There are 2 types of Providers in a Container, the Main Provider and the Additional Providers.
+- There are 2 types of Providers in a Container, the Main Provider, and the Additional Providers.
 - The Main Service Provider: this is the Service Provider that is named after its Container
 (Example in a Car Container it will be named CarServiceProvider).
 - The Additional Service Providers: any additional Providers in the Container. (Example PoliciesServiceProvider or EventsServiceProvider).
-- The Main Provider is responsible of registering the Additional Providers.
+- The Main Provider is responsible for registering the Additional Providers.
 - The Main Provider will be auto registered in the framework by the Port layer.
 - In case a Provider needs to be used in a Container, the Container MUST have a Main Provider first. Then the main Provider job is to load the additional Providers in the Container (Events Provider, Policies Provider,...).
+
 
 
 
 <a id="Events"></a>
 ## C : Events
 
-
-Events provides a simple observer implementation, allowing you to subscribe and listen for events in your application. 
-
+Events provide a simple observer implementation, allowing you to subscribe and listen for events in your application. 
 
 #### Principles:
 - A Container MAY have more than one Events.
@@ -589,12 +581,11 @@ Events provides a simple observer implementation, allowing you to subscribe and 
 
 
 
+
 <a id="Migrations"></a>
 ## C : Migrations
 
-
-
-Migrations (are short name for Database Migrations). 
+Migrations (are the short name for Database Migrations). 
 
 Migrations are the version control of your database. They are very useful for generating and documenting the database tables.
 
@@ -604,21 +595,17 @@ Migrations are the version control of your database. They are very useful for ge
 
 
 
-
-
 <a id="Seeders"></a>
 ## C : Seeders
 
+Seeders (are a short name for Database Seeders). 
 
-Seeders (are short name for Database Seeders). 
-
-Seeders are classes that seeds the database with data, this data might need to exist in the application after its installation (example: Roles and Permissions with Default Users types).
+Seeders are classes that seed the database with data, this data might need to exist in the application after its installation (example: Roles and Permissions with Default Users types).
 
 
 #### Principles:
 - Seeders SHOULD be created in the Containers.
-- Packages seeders SHOULD be placed in their own Containers, unless they belong to an existing Container.
-
+- Packages seeders SHOULD be placed in their own Containers unless they belong to an existing Container.
 
 
 
@@ -627,7 +614,7 @@ Seeders are classes that seeds the database with data, this data might need to e
 ## C : Factories
 
 
-Factories (are short name for Models Factories). 
+Factories (are a short name for Models Factories). 
 
 Factories are used to generate some fake data with the help of Faker to be used for testing purposes.
 
@@ -676,6 +663,18 @@ You can enable and disable Middlewares as you wish.
 
 
 
+<br>
+<a id="Feedback"></a>
+# Feedback & Questions
+
+> Your feedback is appreciated.
+
+You have a Feedback, Question or Suggestion? Get in touch, we are on [**Gitter**](https://gitter.im/porto-sap/Lobby), let's have a quick discussion.
+
+[![Gitter](https://badges.gitter.im/porto-sap/Lobby.svg)](https://gitter.im/porto-sap/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+
+<br>
 <a id="Credits"></a>
 # Credits
 
