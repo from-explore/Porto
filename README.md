@@ -177,38 +177,38 @@ Container
 	├── Services
 	├── Models
 	├── Events
+	├── Pilicies	
 	├── Exceptions
 	├── Contracts
+	├── Providers
 	├── Tests
 	│   └── Unit
-	├── Database
+	├── Data
 	│   ├── Migrations
-	│   └── Seeders
-	├── Settings
-	│   ├── Providers
+	│   ├── Seeders
 	│   ├── Factories
+	│   ├── Criterias
 	│   └── Repositories
 	└── UI
 	    ├── API
 	    │   ├── Routes
 	    │   ├── Controllers
 	    │   ├── Requests
-	    │   ├── Pilicies
 	    │   ├── Transformers
 	    │   └── Tests
 	    │       └── Functional
-	    ├── CLI
-	    │   ├── Commands
-	    │   ├── Controllers
+	    ├── WEB
+	    │   ├── Routes
+	    │   ├── Controllers
+	    │   ├── Requests
+	    │   ├── Views
 	    │   └── Tests
-	    │       └── Functional
-	    └── WEB
-	        ├── Routes
-	        ├── Controllers
-	        ├── Requests
-	        ├── Views
+	    │       └── Acceptance
+	    └── CLI
+	        ├── Commands
+	        ├── Controllers
 	        └── Tests
-	            └── Acceptance
+	            └── Functional
 ```
 
 
