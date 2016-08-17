@@ -24,7 +24,7 @@
 	- [Controllers](#Controllers)
 	- [Requests](#Requests)
 	- [Actions](#Actions)
-	- [Services](#Services)
+	- [Tasks](#Tasks)
 	- [Models](#Models)
 	- [Views](#Views)
 	- [Transformers](#Transformers)
@@ -53,7 +53,7 @@
 It is very helpful for big and long term projects, as these projects tend to have higher complexity with time.
 
 Porto is inspired by the DDD (Domain Driven Design) and the MVC (Model View Controller) patterns.
-It adapts techniques from multiple architectures (Layered, Clean, Service Oriented and Modular). 
+It adapts techniques from multiple architectures (Layered, Clean, Task Oriented and Modular). 
 And it adheres to the most convenient design principles (SOLID, LIFT, Generalization, GRASP and more).
 
 
@@ -127,7 +127,7 @@ The Container wraps the related Components in one place.
 ```
 Container 1
 	├── Actions
-	├── Services
+	├── Tasks
 	├── Models
 	└── UI
 	    ├── WEB
@@ -144,7 +144,7 @@ Container 1
 
 Container 2
 	├── Actions
-	├── Services
+	├── Tasks
 	├── Models
 	└── UI
 	    ├── WEB
@@ -164,7 +164,7 @@ Container 2
 <a id="Containers-Interactions"></a>
 ### Interactions between Containers
 - A Container MAY depends on one or many other Containers.
-- A Controller MAY run Services And Actions from another Container.
+- A Controller MAY run Tasks And Actions from another Container.
 - A Model MAY have a relationship with a Model from other Containers.
 
 
@@ -174,7 +174,7 @@ Container 2
 ```
 Container
 	├── Actions
-	├── Services
+	├── Tasks
 	├── Models
 	├── Events
 	├── Pilicies	
@@ -228,7 +228,7 @@ Every Container consist of a number of Components, in **Porto** the Components a
 
 They are the main Components. (You must use them for almost all types of Apps):
 
-Routes - Controllers - Requests - Actions - Services - Models - Views - Transformers.
+Routes - Controllers - Requests - Actions - Tasks - Models - Views - Transformers.
 
 > **Views:** should be used in case the App serves HTML pages.
 > <br>
@@ -240,7 +240,8 @@ Routes - Controllers - Requests - Actions - Services - Models - Views - Transfor
 <a id="Components-Interaction-Diagram"></a>
 ### Class A Components Interaction Diagram
 
-![](https://s9.postimg.org/y03cz5rhr/porto_container.png)
+
+![](https://s4.postimg.org/nqenznt25/porto_container.png)
 
 
 
@@ -254,8 +255,8 @@ Routes - Controllers - Requests - Actions - Services - Models - Views - Transfor
 2. `Endpoint` calls its `Controller` function.
 3. `Request` injected in the `Controller` automatically applies the request validation/authrization rules.
 4. `Controller` calls an `Action` and pass the `Request` data to it.
-5. `Action` performs the business logic or calls `Services`.
-6. `Services` performs the shared business logic between multiple `Actions`.
+5. `Action` performs the business logic or calls `Tasks`.
+6. `Tasks` performs the shared business logic between multiple `Actions`.
 7. `Action` returns data to the `Controller`.
 8. `Controller` builds the response (using `View` or `Transformer`) and send it back to the `User`.
 
@@ -274,7 +275,7 @@ Repositories - Exceptions - Criterias - Policies - Tests.
 
 They are completely optional Components. (You can use them only when you need them, based on your App needs):
 
-Middlewares - Service Providers - Events - Commands - DB Migrations - DB Seeders - Data Factories - Contracts...
+Middlewares - Task Providers - Events - Commands - DB Migrations - DB Seeders - Data Factories - Contracts...
 
 
 
@@ -323,7 +324,7 @@ The Controllers concept is the same as in MVC *(They are the C in MVC)*, but wit
    2. Calling an Action (and passing request data to it)
    3. Building a Response (MAY build response based on the data collected from the Action call)
 - Controllers SHOULD NOT have any form of business logic. (It SHOULD call an Action to perform the business logic).
-- Controllers SHOULD NOT call Container Services. They MAY only call Actions. (And then Actions can call Container Services).
+- Controllers SHOULD NOT call Container Tasks. They MAY only call Actions. (And then Actions can call Container Tasks).
 - Controllers MUST only be called by Routes Endpoints only.
 - Every Container UI folder (Web, API, CLI) will have its own Controllers, so in a typical Container, you might have three Controllers.
 
@@ -348,43 +349,40 @@ Requests are the best place to apply validations, since the validations rules wi
 
 Actions represent the Use Cases of the Application *(the actions that can be taken by a User or a Software in the Application)*. 
 
-Actions are the main classes that hold and/or orchestrate the business logic of the Application. *(They MAY do all the job internally or call some services to help to do the job)*.
+Actions do not hold business logic. They orchestrate the Tasks to perform the business logic of the Application.
 
-Actions take Data Structures as inputs, manipulates them according to the business rules and output a new Data Structures.
+Actions take Data Structures as inputs, manipulates them according to the business rules through the Tasks and output a new Data Structures.
 
-Actions SHOULD NOT care how the Data is gathered or how it will be represented.
+Actions SHOULD NOT care how the Data is gathered, how it is manipulated or how it will be represented.
 
-By just looking at the Actions folder of a Container, you can determine what Use Cases this Container provides. And by looking at all the Actions you can tell what your Application can do, and what features are implemented so far.
+By just looking at the Actions folder of a Container, you can determine what Use Cases this Container provides. And by looking at all the Actions you can tell what your Application can do.
 
 #### Principles:
 - Every Action SHOULD be responsible for doing a single Use Case in the Application.
-- An Action MAY call multiple Services. (They can even call Services from other Containers as well). The Services only exist to handle the reusable code of the Actions.
-- An Action MAY retrieves data from Services and pass data to another service.
+- An Action MAY call multiple Tasks. (They can even call Tasks from other Containers as well).
+- An Action MAY retrieves data from Tasks and pass data to another Task.
 - Actions MAY return data to the Controller.
 - Actions SHOULD NOT return a response. (the Controller job is to return a response).
 - An Action SHOULD NOT call another Action. Because this doesn't make logical sense.
-- Actions are mainly used from Controllers. However, they can be used from Events, Commands or other Classes. But they SHOULD NOT be used from other Actions or from Services.
+- Actions are mainly used from Controllers. However, they can be used from Events, Commands or other Classes. But they SHOULD NOT be used from other Actions or from Tasks.
 - Every Action SHOULD have only a single function named `run()`.
-- Containers MAY have an Action per functionality "feature".
 
 
-<a id="Services"></a>
-## A : Services
+<a id="Tasks"></a>
+## A : Tasks
 
-The Services classes exist to only hold the reusable code of the Actions. 
-(Whenever a piece of code needs to be reused by another Action it should be placed as a Service).
+The Tasks are the classes that holds the business logic. 
+Every Task is responsibile for little part of the logic.
 
-Services hold business logic like Actions but unlike Actions every Service is responsible for only a single job. 
-*(While an Action is responsible for doing an Application Use Case from A to Z, the Service is responsible for doing a detail that could be reused by other Actions)*.
 
 #### Principles:
-- Every Service SHOULD have a single responsibility (job).
+- Every Task SHOULD have a single responsibility (job).
 - An Action MAY receive and return Data. (Actions SHOULD NOT return a response, the Controller job is to return a response).
-- A Service SHOULD NOT call another Service. Because that will cause a big mess.
-- A Service SHOULD NOT call an Action. Because your code wouldn't make logical sense.
-- Services are mainly called from Actions. (They could be called from Actions of other Containers as well). However, they can be called from Events, Jobs, Commands and other classes except the ones mentioned above.
-- A Service may contain more than one function but the functions must be logically related and explicitly named "example: `FindUserService` can have 2 functions `byId` and `byEmail`". In case a service has a single function it can be named `run`.
-- A Service SHOULD NOT be called from Controller. Because this leads to non-documented feature in your code. It's ok to have a lot of Actions "example: `FindUserByIdAction` and `FindUserByEmailAction` where both Actions are calling different functions of the same Service".
+- A Task SHOULD NOT call another Task. Because that will cause a big mess.
+- A Task SHOULD NOT call an Action. Because your code wouldn't make logical sense.
+- Tasks are mainly called from Actions. (They could be called from Actions of other Containers as well).
+- A Task may contain more than one function but the functions must be logically related and explicitly named "example: `FindUserTask` can have 2 functions `byId` and `byEmail`". In case a Task has a single function it can be named `run`.
+- A Task SHOULD NOT be called from Controller. Because this leads to non-documented feature in your code. It's ok to have a lot of Actions "example: `FindUserByIdAction` and `FindUserByEmailAction` where both Actions are calling different functions of the same Task".
 
 
 <a id="Models"></a>
@@ -459,7 +457,7 @@ Transformers takes a Model or a group of Models "Collection" and converts it to 
 
 The Repository classes are an implementation of the Repository Design Pattern.
 
-Their major roles are separating the business logic from the data (or the data access service).
+Their major roles are separating the business logic from the data (or the data access Task).
 
 Repositories saves and retrieves Models to/from the underlying storage mechanism.
 
@@ -497,7 +495,7 @@ Without using a Criteria class, you can add your query conditions to a Repositor
 #### Principles:
 
 - Every Container MAY have its own Criterias. However, shared Criterias SHOULD be created in the Port layer.
-- A Criteria MUST not contain any extra code, if it needs data, the data SHOULD be passed to it from the Actions or the Service. It SHOULD not run (call) any Service for data.
+- A Criteria MUST not contain any extra code, if it needs data, the data SHOULD be passed to it from the Actions or the Task. It SHOULD not run (call) any Task for data.
 
 
 
@@ -508,7 +506,7 @@ Policies are used to group authorization logic based on the resource they author
 
 Without using a Policy class, you will have to write your authorization code in the Request class. But this will make the Request looks ugly, and won't allow you to reuse the authorization code. 
 
-When using a Policy you can simply and easily apply authorization code in any request, with a simple good looking syntax code. Since every Policy will be linked to their Model using Service Providers.
+When using a Policy you can simply and easily apply authorization code in any request, with a simple good looking syntax code. Since every Policy will be linked to their Model using Task Providers.
 
 Policy authorization example: check if this user owns that product before deleting it, or check if this user is an admin to do manage products.
 
@@ -528,7 +526,7 @@ The two most essential Tests types for this architecture are the Unit Tests and 
 #### Principles:
 - Containers MAY be covered by all types of Tests.
 - Use Functional Tests to test Container Routes are doing what's expected from them.
-- Use Unit Tests to test Container Actions and Services are doing what's expected from them.
+- Use Unit Tests to test Container Actions and Tasks are doing what's expected from them.
 
 
 
@@ -551,18 +549,18 @@ The two most essential Tests types for this architecture are the Unit Tests and 
 <a id="Providers"></a>
 ## C : Providers
 
-Providers (are short names for Service Providers).
+Providers (are short names for Task Providers).
 
-Service providers are the central place of configuring and bootstrapping a Container.
+Task providers are the central place of configuring and bootstrapping a Container.
 
-They are the place where you register things such as container bindings, event listeners, middleware, routes... to the framework service container.
+They are the place where you register things such as container bindings, event listeners, middleware, routes... to the framework Task container.
 
 #### Principles:
 - A Container MAY have one or many Providers and MAY have no Provider at all.
 - There are 2 types of Providers in a Container, the Main Provider, and the Additional Providers.
-- The Main Service Provider: this is the Service Provider that is named after its Container
+- The Main Task Provider: this is the Task Provider that is named after its Container
 (Example in a Car Container it will be named CarServiceProvider).
-- The Additional Service Providers: any additional Providers in the Container. (Example PoliciesServiceProvider or EventsServiceProvider).
+- The Additional Task Providers: any additional Providers in the Container. (Example PoliciesServiceProvider or EventsServiceProvider).
 - The Main Provider is responsible for registering the Additional Providers.
 - The Main Provider will be auto registered in the framework by the Port layer.
 - In case a Provider needs to be used in a Container, the Container MUST have a Main Provider first. Then the main Provider job is to load the additional Providers in the Container (Events Provider, Policies Provider,...).
@@ -683,3 +681,4 @@ You have a Feedback, Question or Suggestion? Get in touch, we are on [**Gitter**
 | Mahmoud Zalt | [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt) | [zalt.me](http://zalt.me) | mahmoud@zalt.me |
 
 
+Task
