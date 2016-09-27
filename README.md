@@ -74,8 +74,8 @@ In Porto, the Interfaces (WEB, API, CLI) are appendices to the Application Logic
 <a id="layers"></a>
 # Layers
 
-Porto consists of two layers the `Containers` and `Port`. 
-And a set of `Components` with predefined responsibilities.
+Porto consists of two layers the `Containers` layer and the `Port` layer. 
+In addition to set of `Components` with predefined responsibilities.
 
 <a id="Layers-Diagram"></a>
 ## Layers Diagram
@@ -192,14 +192,14 @@ Routes - Controllers - Requests - Actions - Tasks - Models - Views - Transformer
 
 *In a typical scenario:*
 
-1. `User` calls an Endpoint in the `Route` file.
+1. **User** calls an Endpoint in the `Route` file.
 2. `Endpoint` calls its `Controller` function.
 3. `Request` injected in the `Controller` automatically applies the request validation/authrization rules.
 4. `Controller` calls an `Action` and pass the `Request` data to it.
-5. `Action` performs the business logic or calls `Tasks`.
-6. `Tasks` performs the shared business logic between multiple `Actions`.
-7. `Action` returns data to the `Controller`.
-8. `Controller` builds the response (using `View` or `Transformer`) and send it back to the `User`.
+5. `Action` calls multiple `Tasks` to perform the business logic.
+6. `Tasks` performs the business logic (every `Task` does a single portion of the main Action).
+7. `Action` collects data from the `Tasks` and returns them to the `Controller`.
+8. `Controller` builds the response using a (`View` or `Transformer`) and send it to the **User**.
 
 
 
