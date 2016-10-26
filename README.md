@@ -362,7 +362,7 @@ Transformers takes a Model or a group of Models "Collection" and converts it to 
 #### Principles:
 - All API responses MUST be formatted via a Transformer.
 - Every Model (that gets returned by an API call) SHOULD have a Transformer.
-- Contain MAY have multiple Transformers.
+- A single Container MAY have multiple Transformers.
 - Usually every Model would have a Transformer.
 
 
