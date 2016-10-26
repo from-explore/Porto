@@ -385,7 +385,7 @@ Container
 	├── Tasks
 	├── Models
 	├── Events
-	├── Pilicies	
+	├── Policies	
 	├── Exceptions
 	├── Contracts
 	├── Traits
