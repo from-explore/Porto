@@ -390,14 +390,17 @@ Container
 	├── Contracts
 	├── Traits
 	├── Providers
-	├── Tests
-	│   └── Unit
+	├── Dependencies
+	├── Configs
 	├── Data
 	│   ├── Migrations
 	│   ├── Seeders
 	│   ├── Factories
 	│   ├── Criterias
 	│   └── Repositories
+	├── Readme
+	├── Tests
+	│   └── Unit
 	└── UI
 	    ├── API
 	    │   ├── Routes
