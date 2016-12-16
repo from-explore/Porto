@@ -128,8 +128,8 @@ Container 1
 	    │   ├── Controllers
 	    │   └── Transformers
 	    └── CLI
-	        ├── Commands
-	        └── Controllers
+	        ├── Routes
+	        └── Commands
 
 Container 2
 	├── Actions
@@ -145,8 +145,8 @@ Container 2
 	    │   ├── Controllers
 	    │   └── Transformers
 	    └── CLI
-	        ├── Commands
-	        └── Controllers
+	        ├── Routes
+	        └── Commands
 ```
 
 
@@ -284,7 +284,7 @@ Requests are the best place to apply validations, since the validations rules wi
 
 Actions represent the Use Cases of the Application *(the actions that can be taken by a User or a Software in the Application)*. 
 
-Actions do not hold business logic. They orchestrate the Tasks to perform the business logic of the Application.
+Actions do not hold business logic. They orchestrate the Tasks to perform the business logic of the Application (They are Tasks wrappers).
 
 Actions take Data Structures as inputs, manipulates them according to the business rules through the Tasks and output a new Data Structures.
 
@@ -298,8 +298,8 @@ By just looking at the Actions folder of a Container, you can determine what Use
 - An Action MAY retrieves data from Tasks and pass data to another Task.
 - Actions MAY return data to the Controller.
 - Actions SHOULD NOT return a response. (the Controller job is to return a response).
-- An Action SHOULD NOT call another Action. Because this doesn't make logical sense.
-- Actions are mainly used from Controllers. However, they can be used from Events, Commands or other Classes. But they SHOULD NOT be used from other Actions or from Tasks.
+- An Action CAN call another Action alongside calling Tasks. (when performing a large Action, you most likely find yourself in need to call multiple Actions).
+- Actions are mainly used from Controllers. However, they can be used from Actions, Events, Commands and/or other Classes. But they SHOULD NOT be used from from Tasks.
 - Every Action SHOULD have only a single function named `run()`.
 
 
@@ -390,7 +390,6 @@ Container
 	├── Contracts
 	├── Traits
 	├── Providers
-	├── Dependencies
 	├── Configs
 	├── Data
 	│   ├── Migrations
@@ -398,9 +397,9 @@ Container
 	│   ├── Factories
 	│   ├── Criterias
 	│   └── Repositories
-	├── Readme
 	├── Tests
-	│   └── Unit
+	│   ├── Unit
+	│   └── Traits
 	└── UI
 	    ├── API
 	    │   ├── Routes
@@ -417,8 +416,8 @@ Container
 	    │   └── Tests
 	    │       └── Acceptance
 	    └── CLI
+	        ├── Routes
 	        ├── Commands
-	        ├── Controllers
 	        └── Tests
 	            └── Functional
 ```
