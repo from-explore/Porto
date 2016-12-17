@@ -299,7 +299,7 @@ By just looking at the Actions folder of a Container, you can determine what Use
 - Actions MAY return data to the Controller.
 - Actions SHOULD NOT return a response. (the Controller job is to return a response).
 - An Action CAN call another Action alongside calling Tasks. (when performing a large Action, you most likely find yourself in need to call multiple Actions).
-- Actions are mainly used from Controllers. However, they can be used from Actions, Events, Commands and/or other Classes. But they SHOULD NOT be used from from Tasks.
+- Actions are mainly used from Controllers. However, they can be used from Actions, Events, Commands and/or other Classes. But they SHOULD NOT be used from Tasks.
 - Every Action SHOULD have only a single function named `run()`.
 
 
