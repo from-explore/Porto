@@ -8,7 +8,7 @@
 - [Quality Attributes](#Quality-Attributes)
 - [Layers](#layers)
 	- [Layers Diagram](#Layer-Diagram)
-	- [Port Layer](#Port-Layer)
+	- [Ship Layer](#Ship-Layer)
 	- [Containers Layer](#Containers-Layer)
 		- [Structure](#Containers-Structure)
 		- [Interactions](#Containers-Interactions)
@@ -37,64 +37,91 @@
 <a id="Introduction"></a>
 # Introduction
 
-**Porto** is a modern Software Architectural Pattern, designed to help developers organize their Code in a super maintainable way.
-
-It is very helpful for big and long term projects, as these projects tend to have higher complexity with time.
-
-Porto is inspired by the DDD (Domain Driven Design) and the MVC (Model View Controller) patterns.
-It adapts techniques from multiple architectures (Layered, Clean, Task Oriented and Modular). 
-And it adheres to the most convenient design principles (SOLID, LIFT, Generalization, GRASP and more).
+**Porto SAP** is a modern Software Architectural Pattern, designed to help developers organize their Code in a super maintainable way. 
+It is very helpful for big and long term projects, as they tend to have higher complexity with time.
 
 
-In Porto, the Interfaces (WEB, API, CLI) are appendices to the Application Logic. And the Actions (Features) are the central organizing principle.
+> AND IT IS REALLY EASY TO USE.
+
+
+In Porto, the Interfaces (`WEB`, `API`, `CLI`) are appendices to the Application Logic, while the `Actions` (Features) are the central organizing principle.
+At its core it consists of 2 layers (`Containers` & `Ship`), in addition to a set of `Components` with predefined responsibilities, living inside the `Containers` and powered by the `Ship`.
+
+<br>
+
+*Porto was inspired by the DDD (Domain Driven Design) and the MVC (Model View Controller) patterns.
+And it adapts techniques from multiple architectures (Layered, Clean, Task Oriented and Modular). 
+As well as it adheres to the most convenient design principles (SOLID, LIFT, Generalization, GRASP and more).*
 
 
 
 <a id="Quality-Attributes"></a>
 # Quality Attributes
 
-- Reusable Code (Containers of Business Logic).
-- Easy to understand by any developer (less magic, more readable code).
-- Fast Development.
-- Decoupled Code (editing this doesn’t break that).
-- Organized Code base.
+- Reusable Business Logic (Containers of Code).
+- Easy to understand by any developer (no magic).
+- Fast Development of similar type Apps.
 - Easy Maintenance (easy to adapt changes).
 - Easy to Test (test driven).
 - Zero Technical debt (low communication between Developers).
-- Zero Code Decoupling.
+- Decoupled Code (editing X doesn’t break Y).
+- Very Organized Code base with Zero Code Decoupling.
 - Scalable Code (easy to modify and implement features).
-- Easy Framework Upgrade.
+- Easy Framework Upgrade (separation between the App and the Framework).
 - Easy to locate anything and everything.
-- Avoid bloated Classes and unmaintainable code.
+- Avoid bloated Classes and unmaintainable code (S.R.P.).
 - Clean and clear development workflow.
-
 
 
 
 <a id="layers"></a>
 # Layers
 
-Porto consists of two layers the `Containers` layer and the `Port` layer. 
-In addition to set of `Components` with predefined responsibilities.
+Layers are just folders! And in Porto we only have 2 of them (`Containers` & `Ship`). These folders can be created anywhere inside your framework. 
+
+*(example: in Laravel PHP you can place them in the `app/` directory or create an `src/` directory on the root)*
+
+
+
+
+
 
 <a id="Layers-Diagram"></a>
 ## Layers Diagram
 
-![](https://s9.postimg.org/tl2oum7r3/porto_layers.png)
+
+![](https://s19.postimg.org/cgh6yqtn7/porto_layers.png)
+
+#### Visual Image:
+
+![](https://s19.postimg.org/d79x4iw0j/porto_visual_diagram.png)
+
+
+
 
 
 <br>
-<a id="Port-Layer"></a>
-## Layer : Port
+<a id="Ship-Layer"></a>
+## Layer : Ship
 
-The Port is just a fancy name for the **Kernel**. It is the engine of the Containers Components. All the Components MUST extend or inherit from the Port layer.
+The Ship layer, contains the engine of the Ship which autoloads all the Components of your Containers. 
+It can also contain code that can be used by all your Containers Components.
 
-The Port plays an important role in separating the Application code from the Framework code. And it holds most of the common jobs that should be applied to all Containers Components.
+The Ship layer, plays an important role in separating the Application code from the Framework code. 
+Thus it facilitates upgrading the Framework without affecting the Application code.
 
-In general, you should not add any business logic or application specific code in the Port. However, in some case you might have to add some code there such as (example: Middleware, Exception, Test,...) 
-if they are reusable by almost all the Containers and they doesn't make sense to live in a one Container.
 
-The Port, facilitates upgrading the Framework without affecting the Application code.
+
+### Ship Strcuture
+
+The Ship, contains 3 folders:
+
+- **Engine**: is the engine that auto-register all your Container's Components and boots your Application.
+- **Features**: contains any shared code between multiple Containers. Example, Global Exceptions and Application Middleware's..
+- **Parents**: contains the classes for each Component in your Container. (Adding functions to the parent classes makes them avialble in every Container).
+
+
+Note: All the Container's Components MUST extend or inherit from the Ship layer *(in particular the Parents folder)*.
 
 
 
@@ -103,11 +130,17 @@ The Port, facilitates upgrading the Framework without affecting the Application 
 <a id="Containers-Layer"></a>
 ## Layer : Containers
 
-The Containers layer is where the Application specific business logic is written. 
-*(Application functionalities)*. 
-The Container wraps the related Components in one place. 
+The Containers layer is where the Application specific business logic is written *(Application functionalities)*.
+
+Containers are wrappers of business logic. 
 
 *"Example in a TODO App the Task would be a Container and the User would be another Container, each has it's own Routes, Controllers, Models, and so on.."*
+
+It's advised to use Single Model per Container, however if you want to add more you can easely do this, 
+but keep in mind 2 Models means 2 Repositories, 2 factories, 2 of almost everything..! so unless you want to use both Models always together, do split them into 2 Containers.
+
+
+
 
 
 <a id="Containers-Structure"></a>
@@ -177,29 +210,30 @@ Routes - Controllers - Requests - Actions - Tasks - Models - Views - Transformer
 
 > **Views:** should be used in case the App serves HTML pages.
 > <br>
-> **Transformers:** should be used in case the App serves JSON data.
+> **Transformers:** should be used in case the App serves JSON or XML data.
 
 
 <a id="Components-Interaction-Diagram"></a>
 ### Main Components Interaction Diagram
 
 
-![](https://s4.postimg.org/nqenznt25/porto_container.png)
+![](https://s19.postimg.org/67vv55w2b/porto_container.png)
 
 
 <a id="Request-Life-Cycle"></a>
 ### Request Life Cycle
 
-*In a typical scenario:*
+*A typical very basic API call scenario:*
 
-1. **User** calls an Endpoint in the `Route` file.
-2. `Endpoint` calls its `Controller` function.
-3. `Request` injected in the `Controller` automatically applies the request validation/authrization rules.
-4. `Controller` calls an `Action` and pass the `Request` data to it.
-5. `Action` calls multiple `Tasks` to perform the business logic.
-6. `Tasks` performs the business logic (every `Task` does a single portion of the main Action).
-7. `Action` collects data from the `Tasks` and returns them to the `Controller`.
-8. `Controller` builds the response using a (`View` or `Transformer`) and send it to the **User**.
+1. **User** calls an `Endpoint` in a `Route` file.
+2. `Endpoint` calls a `Middleware` to handle the Authentication.
+3. `Endpoint` calls its `Controller` function.
+4. `Request` injected in the `Controller` automatically applies the request validation & authrization rules.
+5. `Controller` calls an `Action` and pass each `Request` data to it.
+6. `Action` calls multiple `Tasks` to perform the business logic, *{or it handles all the job itself}*.
+7. `Tasks` performs the business logic (every `Task` does a single portion of the main Action).
+8. `Action` collects data from the `Tasks` and returns them to the `Controller`.
+9. `Controller` builds the response using a (`View` or `Transformer`) and send it back to the **User**.
 
 
 
@@ -208,7 +242,7 @@ Routes - Controllers - Requests - Actions - Tasks - Models - Views - Transformer
 <a id="Optional-Components"></a>
 ## Optional Components:
 
-You can add these Components when you need them, based on your App needs, however some of them are very recommended:
+You can add these Components when you need them, based on your App needs, however some of them are highly recommended:
 
 Repositories - Exceptions - Criterias - Policies - Tests - Middlewares - Service Providers - Events - Commands - DB Migrations - DB Seeders - Data Factories - Contracts - Traits...
 
@@ -220,7 +254,7 @@ Repositories - Exceptions - Criterias - Policies - Tests - Middlewares - Service
 <a id="Components-Details"></a>
 # Main Components Definitions & Principles
 
-Below is the explanation of the roles, usage and principles of each Component.
+Below is the explanation of the roles, usage and principles of each Main Component.
 
 
 
@@ -237,12 +271,12 @@ The Routes files contain Endpoints (URL patterns that identify the incoming requ
 When an HTTP request hits your Application, the Endpoints match with the URL pattern and make the call to the corresponding Controller function.
 
 #### Principles:
-- There are two types of Routes, API Routes and Web Routes.
+- There are three types of Routes, API Routes, Web Routes and CLI Routes.
 - The API Routes files SHOULD be separated from the Web Routes files, each in its own folder.
 - The Web Routes folder will contain only the Web Endpoints, (accessible by Web browsers); And the API Routes folder will contain only the API Endpoints, (accessible by any consumer App).
 - Every Container SHOULD have its own Routes.
-- A single Route file MAY contain multiple Endpoints.
-- The Endpoint job is to call a function on the corresponding Controller once an HTTP request is made. (It SHOULD NOT do anything else).
+- Every Route file SHOULD contain a single Endpoints.
+- The Endpoint job is to call a function on the corresponding Controller once a request of any type is made. (It SHOULD NOT do anything else).
 
 
 <a id="Controllers"></a>
@@ -254,14 +288,14 @@ The Controllers concept is the same as in MVC *(They are the C in MVC)*, but wit
 
 #### Principles:
 - Controllers SHOULD NOT know anything about the business logic or about any business object.
-- A Controller SHALL only does the following jobs:
+- A Controller SHOULD only do the following jobs:
    1. Reading a Request data (user input)
    2. Calling an Action (and passing request data to it)
-   3. Building a Response (MAY build response based on the data collected from the Action call)
+   3. Building a Response (usually build response based on the data collected from the Action call)
 - Controllers SHOULD NOT have any form of business logic. (It SHOULD call an Action to perform the business logic).
 - Controllers SHOULD NOT call Container Tasks. They MAY only call Actions. (And then Actions can call Container Tasks).
-- Controllers MUST only be called by Routes Endpoints only.
-- Every Container UI folder (Web, API, CLI) will have its own Controllers, so in a typical Container, you might have three Controllers.
+- Controllers CAN be called by Routes Endpoints only.
+- Every Container UI folder (Web, API, CLI) will have its own Controllers.
 
 
 
@@ -270,7 +304,9 @@ The Controllers concept is the same as in MVC *(They are the C in MVC)*, but wit
 
 Requests mainly serves the user input in the application. And they are very useful to automatically apply the Validation and Authorization rules.
 
-Requests are the best place to apply validations, since the validations rules will be related to every request. Without a Request class you can define multiple sets of validation rules in your Model (CreateValidation, UpdateValidation,..) to manually apply the validation from Controllers before every function. But with Request classes all this job will be automated, in addition to that the Request can also check of Authorization (check if this user has access to this controller function). Example: check if this user own that product before deleting it, or check if this user is admin to do edit something.
+Requests are the best place to apply validations, since the validations rules will be related to every request. 
+Requests can also check of Authorization to check if this user has access to this controller function. 
+*(Example: check if this user own that product before deleting it, or check if this user is admin to do edit something).*
 
 #### Principles:
 - A Request MAY hold the Validation / Authorization rules.
@@ -284,40 +320,56 @@ Requests are the best place to apply validations, since the validations rules wi
 
 Actions represent the Use Cases of the Application *(the actions that can be taken by a User or a Software in the Application)*. 
 
-Actions do not hold business logic. They orchestrate the Tasks to perform the business logic of the Application (They are Tasks wrappers).
+Actions CAN hold business logic or/and they orchestrate the Tasks to perform the business logic.
 
-Actions take Data Structures as inputs, manipulates them according to the business rules through the Tasks and output a new Data Structures.
+Actions take data structures as inputs, manipulates them according to the business rules internally or through some Tasks, then output a new data structures.
 
-Actions SHOULD NOT care how the Data is gathered, how it is manipulated or how it will be represented.
+Actions SHOULD NOT care how the Data is gathered, or how it will be represented.
 
-By just looking at the Actions folder of a Container, you can determine what Use Cases this Container provides. And by looking at all the Actions you can tell what your Application can do.
+By just looking at the Actions folder of a Container, you can determine what Use Cases (features) your Container provides. 
+And by looking at all the Actions you can tell what an Application can do.
+
+
 
 #### Principles:
 - Every Action SHOULD be responsible for doing a single Use Case in the Application.
-- An Action MAY call multiple Tasks. (They can even call Tasks from other Containers as well).
 - An Action MAY retrieves data from Tasks and pass data to another Task.
+- An Action MAY call multiple Tasks. (They can even call Tasks from other Containers as well!).
 - Actions MAY return data to the Controller.
 - Actions SHOULD NOT return a response. (the Controller job is to return a response).
-- An Action CAN call another Action alongside calling Tasks. (when performing a large Action, you most likely find yourself in need to call multiple Actions).
-- Actions are mainly used from Controllers. However, they can be used from Actions, Events, Commands and/or other Classes. But they SHOULD NOT be used from Tasks.
+- An Action CAN call another Action (but it's recommended not to do that).
+- Actions are mainly used from Controllers. However, they can be used from Events, Commands and/or other Classes. But they SHOULD NOT be used from Tasks.
 - Every Action SHOULD have only a single function named `run()`.
+
+
 
 
 <a id="Tasks"></a>
 ## Tasks
 
-The Tasks are the classes that holds the business logic. 
+The Tasks are the classes that holds shared business logic between multiple Actions. 
+
 Every Task is responsibile for little part of the logic.
+
+Tasks are optional, but in most cases you find yourself in need for them.
+
+Example: Let's say we have an Action 1 that needs to find a record by its ID from the DB, then fires an Event and pass the record data to it. 
+And we have an Action 2 that needs to find the same record by its ID then makes a call to an API and pass the record data to it.
+Since both actions are performing the "find a record by ID" job, it would be much better to have a task the does this job and returns that record.
+
+Whenever you see the possiblitiy of reusing a piece of code from an Action, you should put that piece of code in a Task.
+
+
 
 
 #### Principles:
 - Every Task SHOULD have a single responsibility (job).
 - An Action MAY receive and return Data. (Actions SHOULD NOT return a response, the Controller job is to return a response).
-- A Task SHOULD NOT call another Task. Because that will cause a big mess.
-- A Task SHOULD NOT call an Action. Because your code wouldn't make logical sense.
-- Tasks are mainly called from Actions. (They could be called from Actions of other Containers as well).
-- A Task may contain more than one function but the functions must be logically related and explicitly named "example: `FindUserTask` can have 2 functions `byId` and `byEmail`". In case a Task has a single function it can be named `run`.
-- A Task SHOULD NOT be called from Controller. Because this leads to non-documented feature in your code. It's ok to have a lot of Actions "example: `FindUserByIdAction` and `FindUserByEmailAction` where both Actions are calling different functions of the same Task".
+- A Task SHOULD NOT call another Task. Because that will takes us back to the Services Architecture and it's a big mess.
+- A Task SHOULD NOT call an Action. Because your code wouldn't make any logical sense then!
+- Tasks SHOULD only be called from Actions. (They could be called from Actions of other Containers as well!).
+- Tasks usually need a single function `run`. However, if you prefer you can have more than one function, but make sure to explicitly name them "example: `FindUserTask` can have 2 functions `byId` and `byEmail`". 
+- A Task SHOULD NOT be called from Controller. Because this leads to non-documented feature in your code. It's totally fine to have a lot of Actions "example: `FindUserByIdAction` and `FindUserByEmailAction` where both Actions are calling the same Task" as well as it's totally fine to have single Action `FindUserAction` making a decision to which Task it should call.
 
 
 <a id="Models"></a>
@@ -421,9 +473,6 @@ Container
 	        └── Tests
 	            └── Functional
 ```
-
-
-
 
 
 
