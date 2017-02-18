@@ -112,13 +112,13 @@ Thus it facilitates upgrading the Framework without affecting the Application co
 
 
 
-### Ship Strcuture
+### Ship Structure
 
 The Ship, contains 3 folders:
 
 - **Engine**: is the engine that auto-register all your Container's Components and boots your Application.
 - **Features**: contains any shared code between multiple Containers. Example, Global Exceptions and Application Middleware's..
-- **Parents**: contains the classes for each Component in your Container. (Adding functions to the parent classes makes them avialble in every Container).
+- **Parents**: contains the classes for each Component in your Container. (Adding functions to the parent classes makes them available in every Container).
 
 
 Note: All the Container's Components MUST extend or inherit from the Ship layer *(in particular the Parents folder)*.
@@ -136,7 +136,7 @@ Containers are wrappers of business logic.
 
 *"Example in a TODO App the Task would be a Container and the User would be another Container, each has it's own Routes, Controllers, Models, and so on.."*
 
-It's advised to use Single Model per Container, however if you want to add more you can easely do this, 
+It's advised to use Single Model per Container, however if you want to add more you can easily do this, 
 but keep in mind 2 Models means 2 Repositories, 2 factories, 2 of almost everything..! so unless you want to use both Models always together, do split them into 2 Containers.
 
 
@@ -228,7 +228,7 @@ Routes - Controllers - Requests - Actions - Tasks - Models - Views - Transformer
 1. **User** calls an `Endpoint` in a `Route` file.
 2. `Endpoint` calls a `Middleware` to handle the Authentication.
 3. `Endpoint` calls its `Controller` function.
-4. `Request` injected in the `Controller` automatically applies the request validation & authrization rules.
+4. `Request` injected in the `Controller` automatically applies the request validation & authorization rules.
 5. `Controller` calls an `Action` and pass each `Request` data to it.
 6. `Action` calls multiple `Tasks` to perform the business logic, *{or it handles all the job itself}*.
 7. `Tasks` performs the business logic (every `Task` does a single portion of the main Action).
@@ -349,7 +349,7 @@ And by looking at all the Actions you can tell what an Application can do.
 
 The Tasks are the classes that holds shared business logic between multiple Actions. 
 
-Every Task is responsibile for little part of the logic.
+Every Task is responsible for little part of the logic.
 
 Tasks are optional, but in most cases you find yourself in need for them.
 
@@ -357,7 +357,7 @@ Example: Let's say we have an Action 1 that needs to find a record by its ID fro
 And we have an Action 2 that needs to find the same record by its ID then makes a call to an API and pass the record data to it.
 Since both actions are performing the "find a record by ID" job, it would be much better to have a task the does this job and returns that record.
 
-Whenever you see the possiblitiy of reusing a piece of code from an Action, you should put that piece of code in a Task.
+Whenever you see the possibility of reusing a piece of code from an Action, you should put that piece of code in a Task.
 
 
 
