@@ -481,25 +481,29 @@ Container
 
 <br>
 <a id="Projects"></a>
+
 # Projects
+
 
 > Ready to see the implementions!
 
 - **PHP**
 	- [**Hello API**](https://github.com/Mahmoudz/Hello-API) *(is an API starter, allows you to build an API-Centric App quickly)*.
-
-
+- **Python**
+	- Next.
+- **Ruby**
+	- Next.
+- **...**
 
 
 <br>
 <a id="Feedback"></a>
-# Feedback & Questions
+# Get in Touch
 
-> Your feedback is appreciated.
+**Your feedback helps.**
 
-You have a Feedback, Question or Suggestion? Get in touch, we are on [**Gitter**](https://gitter.im/porto-sap/Lobby), let's have a quick discussion.
+For Feedbacks, Questions or Suggestions? We are on [**Slack**](https://apiato.slack.com/shared_invite/MTYyMzk3MzIzNjIxLTE0OTA5MDE0NTMtOTljOGU1NmFlZQ).
 
-[![Gitter](https://badges.gitter.im/porto-sap/Lobby.svg)](https://gitter.im/porto-sap/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 
 <br>
@@ -509,3 +513,12 @@ You have a Feedback, Question or Suggestion? Get in touch, we are on [**Gitter**
 | Authors      | Twitter                                           | Site                      | Contact         |
 |--------------|---------------------------------------------------|---------------------------|-----------------|
 | Mahmoud Zalt | [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt) | [zalt.me](http://zalt.me) | mahmoud@zalt.me |
+
+
+<br>
+<a id="Donations"></a>
+# Donations
+
+Your Support Matters.
+
+[![Beerpay](https://beerpay.io/apiato/apiato/badge.svg?style=beer-square)](https://beerpay.io/apiato/apiato)  [![Beerpay](https://beerpay.io/apiato/apiato/make-wish.svg?style=flat-square)](https://beerpay.io/apiato/apiato?focus=wish)
