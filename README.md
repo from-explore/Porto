@@ -1,8 +1,6 @@
 # Porto (Software Architectural Pattern)
 
-![](https://s31.postimg.org/v0tfzzevf/Porto_Logo.png)
-
-<br>
+## Welcome to Porto
 
 - [Introduction](#Introduction)
 - [Quality Attributes](#Quality-Attributes)
