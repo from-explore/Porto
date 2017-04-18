@@ -25,6 +25,7 @@
 	- [Models](#Models)
 	- [Views](#Views)
 	- [Transformers](#Transformers)
+	- [Sub-Actions](#Sub-Actions)
 - [Container Example](#Container-Example)
 - [Projects](#Projects)
 - [Feedback & Questions](#Feedback)
@@ -35,34 +36,24 @@
 <a id="Introduction"></a>
 # Introduction
 
-**Porto SAP** is a modern Software Architectural Pattern, designed to help developers organize their Code in a super maintainable way. 
-It is very helpful for big and long term projects, as they tend to have higher complexity with time.
+**Porto SAP** is a modern Software Architectural Pattern, designed to help developers organize their Code in a highly maintainable way. 
 
+Architectural Patterns like Porto are great alternatives to the standard MVC, for large and long term projects, as they tend to have higher complexity with time.
 
-> AND IT IS REALLY EASY TO USE.
-
-
-In Porto, the Interfaces (`WEB`, `API`, `CLI`) are appendices to the Application Logic, while the `Actions` (Features) are the central organizing principle.
-At its core it consists of 2 layers (`Containers` & `Ship`), in addition to a set of `Components` with predefined responsibilities, living inside the `Containers` and powered by the `Ship`.
 
 <br>
-
-*Porto was inspired by the DDD (Domain Driven Design) and the MVC (Model View Controller) patterns.
-And it adapts techniques from multiple architectures (Layered, Clean, Task Oriented and Modular). 
-As well as it adheres to the most convenient design principles (SOLID, LIFT, Generalization, GRASP and more).*
-
 
 
 <a id="Quality-Attributes"></a>
 # Quality Attributes
 
-- Reusable Business Logic (Containers of Code).
-- Easy to understand by any developer (no magic).
-- Fast Development of similar type Apps.
+- Reusable Business Logic (Containers) across multiple similar projects.
+- Easy to understand by any developer (No magic!).
 - Easy Maintenance (easy to adapt changes).
 - Easy to Test (test driven).
 - Zero Technical debt (low communication between Developers).
 - Decoupled Code (editing X doesn’t break Y).
+- Pluggable UI, (build Web App today and then build your API (or the opposite) easely anytime later)
 - Very Organized Code base with Zero Code Decoupling.
 - Scalable Code (easy to modify and implement features).
 - Easy Framework Upgrade (separation between the App and the Framework).
@@ -72,16 +63,52 @@ As well as it adheres to the most convenient design principles (SOLID, LIFT, Gen
 
 
 
+
+## Some of the Features in little details:
+
+### Pluggable UI
+
+It's common, to build a Web interface for an Application with a future plan to open an API to the same code base. 
+
+Porto takes these kinds of decisions into consideration, this in Porto, the Interfaces (`WEB`, `API`, `CLI`) are appendices to the Application Logic, while the `Actions` (Features) are the central organizing principle.
+
+At its core Porto consists of 2 layers (`Containers` & `Ship`) and set of `Components` with predefined responsibilities.
+
+### Modularity
+
+In Porto, your application business logic lives in `Containers` (same as Modules/Domains) and interact with other Containers in pre-defined directions.
+
+
+### Testability
+
+Writting testable code is high priority for Porto. Following the principles as advised will ensure you have easily testable code.
+
+Porto includes Unit tests folders at the root of the Container. And also includes functional tests folders in each UI folder.
+
+
+### Searchability 
+
+One of the biggest advantages of Porto, is the speed of finding a piece of code in a large code base.
+
+Usually, developers build classes with set of related functions. And then start making calls between those functions of different classes.. The bigger the code gets the harder it becomes to find a specific function or track a feature down.
+
+In porto the biggest class consist of single function and it's always having the same name `run`. 
+This allows you to find any Use Case (`Action`) in your code by just browsing the files.
+
+In Porto you can find any feature implementation in less than 3 seconds! (example: if you are looking for where the user address is being validated!, just go to the Address Container, open the list of Actions and search for ValidateUserAddressAction). 
+
+
 <a id="layers"></a>
 # Layers
 
-Layers are just folders! And in Porto we only have 2 of them (`Containers` & `Ship`). These folders can be created anywhere inside your framework. 
+Porto has 2 layers only (`Containers` & `Ship`). These Layers (folders) can be created anywhere inside your framework. 
 
 *(example: in Laravel PHP you can place them in the `app/` directory or create an `src/` directory on the root)*
 
 
+The high-level code (Application Business Logic), should be written in the Container Layer. While the low-level code will live in the Ship Layer. 
 
-
+The Containers (high-level code) relies *indirectly* on the Ship (low-level code) to function. But not the opposite.
 
 
 <a id="Layers-Diagram"></a>
@@ -112,12 +139,11 @@ Thus it facilitates upgrading the Framework without affecting the Application co
 
 ### Ship Structure
 
-The Ship, contains 3 folders:
+The Ship, contains:
 
 - **Engine**: is the engine that auto-register all your Container's Components and boots your Application.
-- **Features**: contains any shared code between multiple Containers. Example, Global Exceptions and Application Middleware's..
 - **Parents**: contains the classes for each Component in your Container. (Adding functions to the parent classes makes them available in every Container).
-
+- **Other Folders**: each of the other folders provide reusable features to be used by all Containers. Example, Global Exceptions, Application Middleware's, Global Config files...
 
 Note: All the Container's Components MUST extend or inherit from the Ship layer *(in particular the Parents folder)*.
 
@@ -417,6 +443,27 @@ Transformers takes a Model or a group of Models "Collection" and converts it to 
 
 
 
+
+<a id="Sub-Actions"></a>
+## Sub-Actions
+
+SubActions are designed eliminate code duplication in Actions. Don't get confused! SubActions do not replace Tasks.
+
+While Tasks allows Actions to share a piece of functionality. SubActions allows Actions to share a seequence of Tasks.
+
+*Example: If an Action is calling Task1, Task2 and Task3. And another Action is calling Task2, Task3 and Task4. (And both Actions are throwing the same Exception when Task2 returns `Foo`). Would be very useful to extract that code into a SubAction, and make it reusable.*
+
+
+
+#### Principles:
+- Sub-Actions MUST call Tasks. If a Sub-Actions is doing all the business logic, without the help of at least 1 Tasks (recommended 2 minimum), It probably shouldn't be a Sub-Action.
+- A Sub-Action MAY retrieves data from Tasks and pass data to another Task.
+- A Sub-Action MAY call multiple Tasks. (They can even call Tasks from other Containers as well!).
+- Sub-Actions MAY return data to the Action.
+- Sub-Action SHOULD NOT return a response. (the Controller job is to return a response).
+- Sub-Action SHOULD NOT call another Sub-Action. (try to avoid that as much as possible).
+- Sub-Action SHOULD be used from Actions. However, they can be used from Events, Commands and/or other Classes. But they SHOULD NOT be used from Controllers or Tasks.
+- Every Sub-Action SHOULD have only a single function named `run()`.
 
 
 
