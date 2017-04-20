@@ -30,6 +30,7 @@
 - [Projects](#Projects)
 - [Feedback & Questions](#Feedback)
 - [Credits](#Credits)
+- [License](#License)
 
 
 
@@ -551,21 +552,19 @@ Container
 
 
 
-<br>
-
 <a id="Feedback"></a>
 # Get in Touch
 
 **Your feedback helps.**
 
-For feedbacks, questions or suggestions? We are on [**Slack**](https://apiato.slack.com/shared_invite/MTYyMzk3MzIzNjIxLTE0OTA5MDE0NTMtOTljOGU1NmFlZQ).
+For feedbacks, questions or suggestions? We are on [**Slack**](https://now-examples-slackin-bvfqosqozk.now.sh/).
+
+[![](https://s19.postimg.org/h7pvzy9ar/Slack-i_OS-icon.png)](https://now-examples-slackin-bvfqosqozk.now.sh)
 
 
-
-<br>
 
 <a id="Credits"></a>
-# Credits
+## Credits
 
 
 | Authors      | Twitter                                           | Site                       | Email           |
@@ -573,10 +572,14 @@ For feedbacks, questions or suggestions? We are on [**Slack**](https://apiato.sl
 | Mahmoud Zalt | [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt) | [zalt.me](https://zalt.me) | mahmoud@zalt.me |
 
 
-<br>
-
 <a id="Donations"></a>
-# Donations
+## Donations
 
 [![Beerpay](https://beerpay.io/apiato/apiato/badge.svg?style=beer-square)](https://beerpay.io/apiato/apiato)  
 [![Beerpay](https://beerpay.io/apiato/apiato/make-wish.svg?style=flat-square)](https://beerpay.io/apiato/apiato?focus=wish)
+
+
+<a name="License"></a>
+## License
+
+The MIT License [(MIT)](https://opensource.org/licenses/MIT).
