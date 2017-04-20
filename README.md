@@ -41,6 +41,10 @@
 Architectural Patterns like Porto are great alternatives to the standard MVC, for large and long term projects, as they tend to have higher complexity with time.
 
 
+> Porto started as an experimental architecture, trying to solve the common problems developers face, when building medium to large web projects. 
+>
+> Feedbacks helps. Contributions are welcomed. Let's make developer's lives easier.
+
 <br>
 
 
@@ -525,6 +529,7 @@ Container
 
 
 <br>
+
 <a id="Projects"></a>
 
 # Projects
@@ -538,32 +543,40 @@ Container
 	- Next.
 - **Ruby**
 	- Next.
-- **...**
+- **Java**
+	- Next.
+- **C#**
+	- Next.
+
+
 
 
 <br>
+
 <a id="Feedback"></a>
 # Get in Touch
 
 **Your feedback helps.**
 
-For Feedbacks, Questions or Suggestions? We are on [**Slack**](https://apiato.slack.com/shared_invite/MTYyMzk3MzIzNjIxLTE0OTA5MDE0NTMtOTljOGU1NmFlZQ).
+For feedbacks, questions or suggestions? We are on [**Slack**](https://apiato.slack.com/shared_invite/MTYyMzk3MzIzNjIxLTE0OTA5MDE0NTMtOTljOGU1NmFlZQ).
 
 
 
 <br>
+
 <a id="Credits"></a>
 # Credits
 
-| Authors      | Twitter                                           | Site                      | Contact         |
-|--------------|---------------------------------------------------|---------------------------|-----------------|
-| Mahmoud Zalt | [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt) | [zalt.me](http://zalt.me) | mahmoud@zalt.me |
+
+| Authors      | Twitter                                           | Site                       | Email           |
+|--------------|---------------------------------------------------|----------------------------|-----------------|
+| Mahmoud Zalt | [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt) | [zalt.me](https://zalt.me) | mahmoud@zalt.me |
 
 
 <br>
+
 <a id="Donations"></a>
 # Donations
 
-Your Support Matters.
-
-[![Beerpay](https://beerpay.io/apiato/apiato/badge.svg?style=beer-square)](https://beerpay.io/apiato/apiato)  [![Beerpay](https://beerpay.io/apiato/apiato/make-wish.svg?style=flat-square)](https://beerpay.io/apiato/apiato?focus=wish)
+[![Beerpay](https://beerpay.io/apiato/apiato/badge.svg?style=beer-square)](https://beerpay.io/apiato/apiato)  
+[![Beerpay](https://beerpay.io/apiato/apiato/make-wish.svg?style=flat-square)](https://beerpay.io/apiato/apiato?focus=wish)
