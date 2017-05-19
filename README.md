@@ -41,48 +41,64 @@
 
 Architectural Patterns like Porto are great alternatives to the standard MVC, for large and long term projects, as they tend to have higher complexity with time.
 
+Porto inherits concepts from the MVC, DDD, Modular and Layered architectures. And it adheres to a list of convenient design principles such as SOLID, OOP, LIFT, DRY, CoC, GRASP, Generalization, High Cohesion and Low Coupling.
 
 > Porto started as an experimental architecture, trying to solve the common problems developers face, when building medium to large web projects. 
->
-> Feedbacks helps. Contributions are welcomed. Let's make developer's lives easier.
+
 
 <br>
+
+Feedbacks & Contributions are welcomed and credited. 
+
+**Let's make the developer's lives easier.**
 
 
 <a id="Quality-Attributes"></a>
 # Quality Attributes
 
 - Reusable Business Logic (Containers) across multiple similar projects.
-- Easy to understand by any developer (No magic!).
-- Easy Maintenance (easy to adapt changes).
+- Easy to understand by any developer (No magic).
+- Easy to maintain (easy to adapt changes).
 - Easy to Test (test driven).
 - Zero Technical debt (low communication between Developers).
 - Decoupled Code (editing X doesn’t break Y).
-- Pluggable UI, (build Web App today and then build your API (or the opposite) easely anytime later)
+- Pluggable UI, (start with Web App now and build an API later, or the opposite)
 - Very Organized Code base with Zero Code Decoupling.
 - Scalable Code (easy to modify and implement features).
-- Easy Framework Upgrade (separation between the App and the Framework).
-- Easy to locate anything and everything.
-- Avoid bloated Classes and unmaintainable code (S.R.P.).
+- Easy Framework Upgrade (complete separation between the App and the Framework).
+- Easy to locate any functionality.
+- Organized coupling between the internal Components.
+- Slim Classes (by following the Single Responsibility Principle).
+- Uses the domain expert language when naming the Components.
 - Clean and clear development workflow.
 
 
 
 
-## Some of the Features in little details:
+## Some of Porto's features in short details:
 
-### Pluggable UI
 
-It's common, to build a Web interface for an Application with a future plan to open an API to the same code base. 
+### Decoupling
 
-Porto takes these kinds of decisions into consideration, this in Porto, the Interfaces (`WEB`, `API`, `CLI`) are appendices to the Application Logic, while the `Actions` (Features) are the central organizing principle.
+Separation of concerns, is an important principle, Porto tries to follow.
 
-At its core Porto consists of 2 layers (`Containers` & `Ship`) and set of `Components` with predefined responsibilities.
+In Porto the Appliction is separated from the framework that it lives in. 
+And the business logic code is separated from infrastructure code, within the Appliction itself. 
+As well as, the UI's (user interfaces) are separated from each others within the business logic code itself.
+
+Making the UI's "`WEB`, `API`, `CLI`" pluggable, allows building the Web interface first and adding the API later or the opposite, with the least effort possible, since the `Actions` are the central organizing principle are they are shared accross UI's.
+
 
 ### Modularity
 
 In Porto, your application business logic lives in `Containers` (same as Modules/Domains) and interact with other Containers in pre-defined directions.
 
+In Porto, Containers are similar in concept to Modules *(from a Modular architecture)*. 
+However, Containers are not purely Modular, as they do cross the bounderies of a Module. The simplest form of that, is the relationships between the Models from different Containers. At the end it's up to the developer to limit and control the connections between Containers, and Porto's rules and guidlines should help achieving that.
+
+In terms of dependancies management, the developer is free to move each Container to its own repository or keep all Containers together under single management. 
+
+Porto benifits from both worlds it applies concepts from the Modular world in the simple Monolithic world.
 
 ### Testability
 
@@ -103,10 +119,15 @@ This allows you to find any Use Case (`Action`) in your code by just browsing th
 In Porto you can find any feature implementation in less than 3 seconds! (example: if you are looking for where the user address is being validated!, just go to the Address Container, open the list of Actions and search for ValidateUserAddressAction). 
 
 
+
+
+
 <a id="layers"></a>
 # Layers
 
-Porto has 2 layers only (`Containers` & `Ship`). These Layers (folders) can be created anywhere inside your framework. 
+At its core Porto consists of 2 layers (`Containers` & `Ship`) and set of `Components` with predefined responsibilities.
+
+These Layers (folders) can be created anywhere inside your framework of choice.
 
 *(example: in Laravel PHP you can place them in the `app/` directory or create an `src/` directory on the root)*
 
@@ -131,8 +152,10 @@ The Containers (high-level code) relies *indirectly* on the Ship (low-level code
 
 
 <br>
+
 <a id="Ship-Layer"></a>
-## Layer : Ship
+
+## Ship Layer:
 
 The Ship layer, contains the engine of the Ship which autoloads all the Components of your Containers. 
 It can also contain code that can be used by all your Containers Components.
@@ -140,6 +163,7 @@ It can also contain code that can be used by all your Containers Components.
 The Ship layer, plays an important role in separating the Application code from the Framework code. 
 Thus it facilitates upgrading the Framework without affecting the Application code.
 
+In Porto the Ship layer is very slim, it doesn't contain common reusable functionalities such as Authentication or Authorization, all these functionalities live in their own separated Containers.
 
 
 ### Ship Structure
@@ -156,17 +180,21 @@ Note: All the Container's Components MUST extend or inherit from the Ship layer 
 
 
 <br>
+
 <a id="Containers-Layer"></a>
-## Layer : Containers
+
+## Containers Layer:
 
 The Containers layer is where the Application specific business logic is written *(Application functionalities)*.
 
-Containers are wrappers of business logic. 
+Containers are wrappers of business logic.
 
-*"Example in a TODO App the Task would be a Container and the User would be another Container, each has it's own Routes, Controllers, Models, and so on.."*
+Here's an example of how to decide creating Containers.
+*"In a TODO App the Task, User and Calendar... each would be in it's own Container, were each has its own Routes, Controllers, Models, Exceptions, ect.. And each Container is responsible of receiving requests and returning responses from whichever UI (Web, API..) it support."*
 
-It's advised to use Single Model per Container, however if you want to add more you can easily do this, 
-but keep in mind 2 Models means 2 Repositories, 2 factories, 2 of almost everything..! so unless you want to use both Models always together, do split them into 2 Containers.
+It's advised to use Single Model per Container, however in some cases you might need more.
+Just keep in mind two Models means two Repositories, two Transformers, etc...
+Unless you want to use both Models always together, do split them into 2 Containers.
 
 
 
@@ -273,7 +301,7 @@ Routes - Controllers - Requests - Actions - Tasks - Models - Views - Transformer
 
 You can add these Components when you need them, based on your App needs, however some of them are highly recommended:
 
-Repositories - Exceptions - Criterias - Policies - Tests - Middlewares - Service Providers - Events - Commands - DB Migrations - DB Seeders - Data Factories - Contracts - Traits...
+Repositories - Exceptions - Criterias - Policies - Tests - Middlewares - Service Providers - Events - Commands - DB Migrations - DB Seeders - Data Factories - Contracts - Traits - Jobs...
 
 
 
@@ -491,6 +519,8 @@ Container
 	├── Exceptions
 	├── Contracts
 	├── Traits
+	├── Jobs
+	├── Notifications
 	├── Providers
 	├── Configs
 	├── Data
